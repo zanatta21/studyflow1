@@ -1,0 +1,7 @@
+# Copie este arquivo para local.properties e ajuste o caminho do Flutter SDK
+# No Windows, use barras normais ou escape: C:\\src\\flutter
+sdk.dir=C:\\Users\\SEU_USUARIO\\AppData\\Local\\Android\\Sdk
+flutter.sdk=C:\\src\\flutter
+flutter.buildMode=debug
+flutter.versionName=1.0.0
+flutter.versionCode=1

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual Técnico — StudyFlow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo"><span class="logo-icon">📖</span> StudyFlow</div>
+      <nav>
+        <a href="#apresentacao">Apresentação</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#instalacao">Instalação</a>
+        <a href="#estrutura">Estrutura</a>
+        <a href="#banco">Banco</a>
+        <a href="#manutencao">Manutenção</a>
+        <a href="#problemas">Problemas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="apresentacao">
+      <h1>Manual Técnico — StudyFlow</h1>
+      <p class="subtitle">Documentação completa do aplicativo de organização dos estudos</p>
+
+      <h2>Apresentação</h2>
+      <p>
+        O <strong>StudyFlow</strong> é um aplicativo Flutter para organização acadêmica.
+        Reúne disciplinas, tarefas, provas, calendário, metas e um painel de progresso em uma única interface.
+      </p>
+
+      <h2>Objetivo e público-alvo</h2>
+      <p>
+        <strong>Objetivo:</strong> apresentar uma visão organizada das atividades acadêmicas.<br>
+        <strong>Público-alvo:</strong> estudantes do ensino médio, técnico e superior.
+      </p>
+    </section>
+
+    <section id="modulos">
+      <h2>Módulos do aplicativo</h2>
+      <table>
+        <thead><tr><th>Módulo</th><th>Funcionalidades</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Progresso</strong></td><td>Dashboard com contadores, barras de progresso, próximas provas e tarefas pendentes</td></tr>
+          <tr><td><strong>Disciplinas</strong></td><td>CRUD completo (nome, professor, descrição, cor)</td></tr>
+          <tr><td><strong>Tarefas</strong></td><td>CRUD com disciplina vinculada, prioridade, data de entrega e status concluído</td></tr>
+          <tr><td><strong>Provas</strong></td><td>CRUD com data, local, nota, observações e status realizada</td></tr>
+          <tr><td><strong>Calendário</strong></td><td>Visualização mensal com marcadores de tarefas e provas; lista do dia selecionado</td></tr>
+          <tr><td><strong>Metas</strong></td><td>CRUD com valor-alvo, unidade (horas/tarefas/provas/páginas), prazo e registro de progresso</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Login e cadastro</h2>
+      <p>
+        Autenticação via Firebase Auth (e-mail/senha).<br>
+        <code>AuthService.login()</code> e <code>AuthService.register()</code>.<br>
+        Validação de campos e mensagens de erro amigáveis.
+      </p>
+    </section>
+
+    <section id="instalacao">
+      <h2>Tecnologias</h2>
+      <ul>
+        <li>Flutter + Dart</li>
+        <li>Firebase Authentication + Cloud Firestore</li>
+        <li>Provider (estado)</li>
+        <li>table_calendar, percent_indicator, google_fonts, intl</li>
+      </ul>
+
+      <h2>Passo a passo para instalação</h2>
+      <ol>
+        <li><code>git clone ... && cd studyflow</code></li>
+        <li><code>flutter create . --project-name studyflow</code></li>
+        <li><code>flutter pub get</code></li>
+        <li>Firebase Console → Authentication (Email/Senha) + Firestore</li>
+        <li>Colocar <code>google-services.json</code> em <code>android/app/</code></li>
+        <li><code>flutter run</code></li>
+      </ol>
+    </section>
+
+    <section id="estrutura">
+      <h2>Estrutura de pastas</h2>
+      <pre><code>lib/
+├── main.dart
+├── models/
+│   ├── subject_model.dart
+│   ├── task_model.dart
+│   ├── exam_model.dart
+│   └── goal_model.dart
+├── screens/
+│   ├── splash_screen.dart
+│   ├── login_screen.dart
+│   ├── register_screen.dart
+│   ├── main_shell.dart          # BottomNavigationBar com 6 abas
+│   ├── progress_screen.dart
+│   ├── subjects_screen.dart
+│   ├── tasks_screen.dart
+│   ├── exams_screen.dart
+│   ├── calendar_screen.dart
+│   └── goals_screen.dart
+├── services/
+│   ├── auth_service.dart
+│   └── data_service.dart       # CRUD de todas as coleções
+├── widgets/
+│   └── custom_text_field.dart
+├── theme/
+│   └── app_theme.dart
+└── utils/
+    └── validators.dart</code></pre>
+    </section>
+
+    <section id="banco">
+      <h2>Estrutura do banco de dados</h2>
+
+      <h3>subjects</h3>
+      <p>name, professor, description, color, userId, createdAt</p>
+
+      <h3>tasks</h3>
+      <p>title, description, subjectId, subjectName, dueDate, completed, priority (baixa/media/alta), userId, createdAt</p>
+
+      <h3>exams</h3>
+      <p>title, subjectId, subjectName, date, location, notes, grade, completed, userId, createdAt</p>
+
+      <h3>goals</h3>
+      <p>title, description, targetValue, currentValue, unit (horas/tarefas/provas/páginas), deadline, completed, userId, createdAt</p>
+
+      <h3>Como cadastrar, editar e excluir</h3>
+      <p>Tudo passa pelo <code>DataService</code>:</p>
+      <ul>
+        <li><code>createSubject / updateSubject / deleteSubject</code></li>
+        <li><code>createTask / updateTask / deleteTask / toggleTask</code></li>
+        <li><code>createExam / updateExam / deleteExam</code></li>
+        <li><code>createGoal / updateGoal / deleteGoal</code></li>
+      </ul>
+    </section>
+
+    <section id="manutencao">
+      <h2>Como alterar cores</h2>
+      <p>Arquivo <code>lib/theme/app_theme.dart</code> — constantes <code>primary</code>, <code>secondary</code>, etc.</p>
+
+      <h2>Como trocar o logo</h2>
+      <ol>
+        <li>Coloque a imagem em <code>assets/images/logo.png</code></li>
+        <li>Substitua o <code>Icon(Icons.menu_book_rounded)</code> por <code>Image.asset(...)</code> no Splash e Login</li>
+      </ol>
+
+      <h2>Como alterar o nome do app</h2>
+      <ul>
+        <li><code>main.dart</code> → title</li>
+        <li>Textos nas telas e AppBar</li>
+        <li>AndroidManifest.xml (android:label)</li>
+      </ul>
+
+      <h2>Como adicionar uma nova tela</h2>
+      <ol>
+        <li>Crie em <code>lib/screens/</code></li>
+        <li>Adicione no array <code>_pages</code> e no <code>BottomNavigationBar</code> de <code>main_shell.dart</code></li>
+      </ol>
+
+      <h2>Como adicionar um campo no banco</h2>
+      <ol>
+        <li>Atualize o model (fromFirestore, toMap, copyWith)</li>
+        <li>Atualize o formulário da tela correspondente</li>
+        <li>Atualize a listagem/card se for exibir</li>
+      </ol>
+
+      <h2>Como gerar nova versão</h2>
+      <p>Atualize <code>version</code> no pubspec.yaml e rode <code>flutter build apk --release</code>.</p>
+    </section>
+
+    <section id="problemas">
+      <h2>Solução de problemas comuns</h2>
+      <table>
+        <thead><tr><th>Problema</th><th>Solução</th></tr></thead>
+        <tbody>
+          <tr><td>Firebase não inicializado</td><td>Verificar <code>Firebase.initializeApp()</code> e google-services.json</td></tr>
+          <tr><td>Erro de índice no Firestore</td><td>Criar o índice composto pelo link que aparece no log</td></tr>
+          <tr><td>Calendário sem locale pt_BR</td><td>Adicionar <code>initializeDateFormatting('pt_BR')</code> no main se necessário</td></tr>
+          <tr><td>Lista vazia após criar</td><td>Verificar regras do Firestore e se userId está correto</td></tr>
+          <tr><td>App trava</td><td><code>flutter clean && flutter pub get</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      <p>StudyFlow — Projeto AV1 Flutter<br>2º Ano Técnico em Informática</p>
+    </footer>
+  </main>
+</body>
+</html>
